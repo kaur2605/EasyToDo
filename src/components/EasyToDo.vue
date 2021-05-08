@@ -1,9 +1,11 @@
 <template>
   <div class="mt-10 w-96 m-auto">
-    <div class="my-10 flex justify-center text-center text-2xl">
+    <div class="my-10 mr-32 flex justify-center text-center text-2xl">
       <h1 class="font-bold text-green-600 text-center font-sans">Easy</h1>
-      <h1 class="font-bold text-grey-700 text-center font-sans">ToDoApp</h1>
+      <h1 class="font-bold text-grey-700 text-center font-sans">ToDo</h1>
     </div>
+
+    <p>{{ message }}</p>
     <div class="">
       <input
         type="text"
@@ -12,49 +14,47 @@
         v-model="newTodo"
       />
       <button
-        class="bg-green-600 border-2 rounded-r-lg px-2 w-26 h-10 text-sm"
+        class="bg-green-600 border-2 rounded-r-lg px-2 w-26 h-10 text-sm text-white"
         @click="addTodo"
       >
         Create To-do
       </button>
     </div>
     <div class="w-72">
-      <h5
-        class="normal text-left h-4 mt-2 c font-normal text-sm leading-4 font-sans"
-      >
+      <h5 class="text-left h-4 mt-4 c font-normal text-sm leading-4 font-sans">
         All To-Do's
       </h5>
       <ul v-for="(todo, index) in todos" :key="todo.id">
         <li
-          :class="{ checkIcon: todo.completed }"
-          class="flex justify-between border-2 rounded-lg w-72 m-auto mt-6 border-transparent"
+          :class="{ completedtask: todo.completed }"
+          class="flex justify-between border-2 bg-white rounded-lg w-72 m-auto mt-6 border-transparent"
+          :style="todo.completed ? { 'background-color': '#10b981' } : null"
         >
           <div
             v-if="todo.showTemp"
             class="text-center w-18 h-12 bg-green-500"
-            @click="completeTask(todo)"
+            @click="completedTask(todo)"
           >
             <div class="p-4">
-              <font-awesome-icon
-                :icon="['fas', 'check']"
-                class="checkIcon text-white"
-              />
+              <font-awesome-icon :icon="['fas', 'check']" class="text-white" />
             </div>
           </div>
-          <div class="normal pl-2 pt-2 font-sans">
+          <div
+            class="normal pl-2 pt-2 font-sans overflow-hidden whitespace-nowrap"
+          >
             {{ todo.title }}
           </div>
 
           <div class="flex">
             <div
               v-if="todo.showIcons"
-              class="text-center w-18 h-12 bg-green-500"
-              @click="completeTask(todo)"
+              class="text-left w-18 h-12 bg-green-500"
+              @click="completedTask(todo)"
             >
               <div class="p-4">
                 <font-awesome-icon
                   :icon="['fas', 'check']"
-                  class="checkIcon text-white"
+                  class="text-white"
                 />
               </div>
             </div>
@@ -84,8 +84,8 @@ export default {
       newTodo: '',
       idForTodo: 3,
       completed: false,
-      beforeEditCache: '',
-
+      isValidationAllowed: false,
+      message: '',
 
       todos: [
         {
@@ -114,27 +114,31 @@ export default {
   },
   methods: {
     addTodo() {
-      if (this.newTodo.trim().length == 0) {
-        return
+      if (this.newTodo === '' || this.newTodo === null || this.newTodo.value === 0) {
+        this.message = 'Please enter text in text box below';
       }
-      this.todos.push({
-        id: this.idForTodo,
-        title: this.newTodo,
-        completed: false,
-        showIcons: true,
-      })
-      this.newTodo = ''
-      this.idForTodo++
+      else {
+        this.message = ''
+        this.todos.push({
+          id: this.idForTodo,
+          title: this.newTodo,
+          completed: false,
+          showIcons: true,
+        })
+        this.newTodo = ''
+        this.idForTodo++
+
+      }
     },
 
     removeTodo(index) {
       this.todos.splice(index, 1)
     },
-    completeTask(todo) {
+    completedTask(todo) {
       console.log(todo);
       todo.completed = !todo.completed
-      todo.showIcons = false;
-      todo.showTemp = true;
+      todo.showIcons = !todo.showIcons;
+      todo.showTemp = !todo.showTemp;
 
     }
   }
@@ -144,9 +148,16 @@ export default {
 </script>
 
 <style>
-.checkIcon {
+body {
+  background: #f5f5f5;
+}
+.completedtask {
   background-color: #10b981;
   color: white;
-  margin-right: 100%;
+  text-align: left;
+  white-space: normal;
+  padding: 0px;
+  margin: 0px;
+  justify-content: left;
 }
 </style>
