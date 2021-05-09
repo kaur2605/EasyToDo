@@ -5,13 +5,13 @@
       <h1 class="font-bold text-grey-700 text-center font-sans">ToDo</h1>
     </div>
 
-    <p>{{ message }}</p>
+    <p class="mb-2 p-4">{{ message }}</p>
     <div class="">
       <input
         type="text"
-        class="w-48 h-10 border-2 border-transparent rounded-sm"
+        class="w-48 h-10 p-2 border-2 border-transparent rounded-sm"
         placeholder="Enter somthing to do..."
-        v-model="newTodo"
+        v-model="newTask"
       />
       <button
         class="bg-green-600 border-2 rounded-r-lg px-2 w-26 h-10 text-sm text-white"
@@ -27,12 +27,11 @@
       <ul v-for="(todo, index) in todos" :key="todo.id">
         <li
           :class="{ completedtask: todo.completed }"
-          class="flex justify-between border-2 bg-white rounded-lg w-72 m-auto mt-6 border-transparent"
-          :style="todo.completed ? { 'background-color': '#10b981' } : null"
+          class="flex border-2 bg-white rounded-lg w-72 mt-6 border-transparent justify-between"
         >
           <div
             v-if="todo.showTemp"
-            class="text-center w-18 h-12 bg-green-500"
+            class="text-center w-18 8 h-12 bg-green-500"
             @click="completedTask(todo)"
           >
             <div class="p-4">
@@ -40,7 +39,8 @@
             </div>
           </div>
           <div
-            class="normal pl-2 pt-2 font-sans overflow-hidden whitespace-nowrap"
+            class="pl-2 pt-2 pr-48 font-sans overflow-hidden whitespace-nowrap"
+            :style="todo.completed ? { 'background-color': '#10b981' } : null"
           >
             {{ todo.title }}
           </div>
@@ -81,10 +81,8 @@ export default {
   name: 'EasyToDo',
   data() {
     return {
-      newTodo: '',
+      newTask: '',
       idForTodo: 3,
-      completed: false,
-      isValidationAllowed: false,
       message: '',
 
       todos: [
@@ -114,18 +112,18 @@ export default {
   },
   methods: {
     addTodo() {
-      if (this.newTodo === '' || this.newTodo === null || this.newTodo.value === 0) {
-        this.message = 'Please enter text in text box below';
+      if (this.newTask === '' || this.newTask === null || this.newTask.value === 0) {
+        this.message = 'Please enter task in text box below ';
       }
       else {
         this.message = ''
         this.todos.push({
           id: this.idForTodo,
-          title: this.newTodo,
+          title: this.newTask,
           completed: false,
           showIcons: true,
         })
-        this.newTodo = ''
+        this.newTask = ''
         this.idForTodo++
 
       }
@@ -135,7 +133,6 @@ export default {
       this.todos.splice(index, 1)
     },
     completedTask(todo) {
-      console.log(todo);
       todo.completed = !todo.completed
       todo.showIcons = !todo.showIcons;
       todo.showTemp = !todo.showTemp;
@@ -154,10 +151,5 @@ body {
 .completedtask {
   background-color: #10b981;
   color: white;
-  text-align: left;
-  white-space: normal;
-  padding: 0px;
-  margin: 0px;
-  justify-content: left;
 }
 </style>
