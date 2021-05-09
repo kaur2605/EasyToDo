@@ -2,7 +2,7 @@
   <div class="mt-10 w-96 m-auto">
     <div class="my-10 mr-32 flex justify-center text-center text-2xl">
       <h1 class="font-bold text-green-600 text-center font-sans">Easy</h1>
-      <h1 class="font-bold text-grey-6 00 text-center font-sans">ToDo</h1>
+      <h1 class="font-bold text-grey-600 text-center font-sans">ToDo</h1>
     </div>
 
     <transition
